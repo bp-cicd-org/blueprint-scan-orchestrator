@@ -31,4 +31,8 @@ repos:
   #   enabled: true
 
   # Add your repositories here:
-  []
+  # []
+  - name: bp-cicd-org/streaming-data-to-rag
+    workflow_file: deploy.yml
+    branch: scan_docker_img_versions
+    enabled: true
