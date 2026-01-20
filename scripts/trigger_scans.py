@@ -134,24 +134,41 @@ def trigger_workflow(
         return result
 
     try:
+        print(f"  Attempting to access repo: {repo_name}", file=sys.stderr)
         repo = gh.get_repo(repo_name)
+        print(f"  Repo found: {repo.full_name}", file=sys.stderr)
+        
+        print(f"  Looking for workflow: {workflow_file}", file=sys.stderr)
         workflow = repo.get_workflow(workflow_file)
+        print(f"  Workflow found: {workflow.name} (id={workflow.id})", file=sys.stderr)
+        
+        # Check if branch exists
+        try:
+            branch_ref = repo.get_branch(branch)
+            print(f"  Branch found: {branch} (sha={branch_ref.commit.sha[:7]})", file=sys.stderr)
+        except GithubException as branch_err:
+            result["status"] = "error"
+            result["error"] = f"Branch '{branch}' not found: {branch_err}"
+            print(f"  Error: Branch '{branch}' not found in {repo_name}", file=sys.stderr)
+            return result
 
         # Trigger the workflow
+        print(f"  Triggering workflow_dispatch on {branch}...", file=sys.stderr)
         success = workflow.create_dispatch(branch)
 
         if success:
             result["status"] = "triggered"
-            print(f"  Triggered {workflow_file} on {repo_name}@{branch}", file=sys.stderr)
+            print(f"  SUCCESS: Triggered {workflow_file} on {repo_name}@{branch}", file=sys.stderr)
         else:
             result["status"] = "failed"
-            result["error"] = "create_dispatch returned False"
-            print(f"  Failed to trigger {workflow_file} on {repo_name}", file=sys.stderr)
+            result["error"] = "create_dispatch returned False - check token permissions (needs 'repo' and 'workflow' scopes)"
+            print(f"  FAILED: create_dispatch returned False for {repo_name}", file=sys.stderr)
+            print(f"  Hint: Ensure BP_GITHUB_TOKEN has 'repo' and 'workflow' permissions", file=sys.stderr)
 
     except GithubException as e:
         result["status"] = "error"
-        result["error"] = str(e)
-        print(f"  Error triggering {repo_name}: {e}", file=sys.stderr)
+        result["error"] = f"GitHub API error: {e.status} - {e.data}"
+        print(f"  Error triggering {repo_name}: {e.status} - {e.data}", file=sys.stderr)
 
     return result
 
