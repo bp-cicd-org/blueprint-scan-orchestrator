@@ -32,7 +32,7 @@ Add the following secrets to this repository:
 
 | Secret | Description |
 |--------|-------------|
-| `SCAN_TRIGGER_TOKEN` | GitHub PAT with `repo` and `workflow` permissions |
+| `BP_GITHUB_TOKEN` | GitHub PAT with `repo` and `workflow` permissions |
 
 ### 3. Run the Orchestrator
 

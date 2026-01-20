@@ -62,9 +62,9 @@ def parse_args() -> argparse.Namespace:
 
 def get_github_token() -> str:
     """Get GitHub token from environment."""
-    token = os.environ.get("GITHUB_TOKEN") or os.environ.get("SCAN_TRIGGER_TOKEN")
+    token = os.environ.get("GITHUB_TOKEN") or os.environ.get("BP_GITHUB_TOKEN")
     if not token:
-        print("Error: GITHUB_TOKEN or SCAN_TRIGGER_TOKEN environment variable required", file=sys.stderr)
+        print("Error: GITHUB_TOKEN or BP_GITHUB_TOKEN environment variable required", file=sys.stderr)
         sys.exit(1)
     return token
 

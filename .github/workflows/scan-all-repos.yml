@@ -63,7 +63,7 @@ jobs:
       - name: Trigger scan workflows
         id: trigger
         env:
-          GITHUB_TOKEN: ${{ secrets.SCAN_TRIGGER_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.BP_GITHUB_TOKEN }}
         run: |
           python scripts/trigger_scans.py \
             --config config/repos.yaml \
@@ -112,7 +112,7 @@ jobs:
 
       - name: Collect reports
         env:
-          GITHUB_TOKEN: ${{ secrets.SCAN_TRIGGER_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.BP_GITHUB_TOKEN }}
         run: |
           python scripts/collect_reports.py \
             --runs-file triggered-runs.json \
