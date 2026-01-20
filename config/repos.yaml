@@ -1,0 +1,34 @@
+# Repository Configuration for NIM Scanner Orchestrator
+#
+# This file defines the list of repositories to scan for NIM usage.
+# The orchestrator will trigger the scan workflow in each repository
+# and collect the results.
+
+# Global settings
+settings:
+  # Default branch to trigger workflows on
+  default_branch: main
+  # Default workflow file to trigger
+  default_workflow: ci.yml
+  # Timeout for waiting on workflow completion (minutes)
+  timeout_minutes: 60
+  # Poll interval for checking workflow status (seconds)
+  poll_interval_seconds: 30
+
+# Repository list
+repos:
+  # Example configuration (uncomment and modify as needed):
+  #
+  # - name: NVIDIA-AI-Blueprints/example-repo
+  #   workflow_file: ci.yml
+  #   branch: main
+  #   exclude_dirs: external,vendor
+  #   enabled: true
+  #
+  # - name: NVIDIA-AI-Blueprints/another-repo
+  #   workflow_file: deploy.yml
+  #   branch: develop
+  #   enabled: true
+
+  # Add your repositories here:
+  []
