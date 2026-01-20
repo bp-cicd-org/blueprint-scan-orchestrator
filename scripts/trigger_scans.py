@@ -255,6 +255,14 @@ def main() -> None:
     print(f"  Triggered: {output['triggered']}", file=sys.stderr)
     print(f"  Failed: {output['failed']}", file=sys.stderr)
 
+    # Exit with error if no workflows were triggered successfully
+    if not args.dry_run:
+        if output['triggered'] == 0:
+            print("\nError: No workflows were triggered successfully!", file=sys.stderr)
+            sys.exit(1)
+        if output['failed'] > 0:
+            print(f"\nWarning: {output['failed']} workflow(s) failed to trigger", file=sys.stderr)
+
 
 if __name__ == "__main__":
     main()
